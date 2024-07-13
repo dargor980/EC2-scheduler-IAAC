@@ -47,6 +47,22 @@ Resources:
                   - 'logs:PutLogEvents'
                 Resource: '*'
 
+  StartLambdaInvokePermission:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      FunctionName: !Ref EC2SchedulerLambda
+      Action: 'lambda:InvokeFunction'
+      Principal: 'events.amazonaws.com'
+      SourceArn: !Sub "arn:aws:events:${AWS::Region}:${AWS::AccountId}:rule/StartEC2Rule"
+
+  StopLambdaInvokePermission:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      FunctionName: !Ref EC2SchedulerLambda
+      Action: 'lambda:InvokeFunction'
+      Principal: 'events.amazonaws.com'
+      SourceArn: !Sub "arn:aws:events:${AWS::Region}:${AWS::AccountId}:rule/StopEC2Rule"
+
   StartEC2Rule:
     Type: 'AWS::Events::Rule'
     Properties:
@@ -56,7 +72,6 @@ Resources:
         - Arn: !GetAtt EC2SchedulerLambda.Arn
           Id: "StartEC2LambdaTarget"
           Input: '{"action": "start"}'
-    DependsOn: StartLambdaInvokePermission
 
   StopEC2Rule:
     Type: 'AWS::Events::Rule'
@@ -67,20 +82,3 @@ Resources:
         - Arn: !GetAtt EC2SchedulerLambda.Arn
           Id: "StopEC2LambdaTarget"
           Input: '{"action": "stop"}'
-    DependsOn: StopLambdaInvokePermission
-
-  StartLambdaInvokePermission:
-    Type: 'AWS::Lambda::Permission'
-    Properties:
-      FunctionName: !Ref EC2SchedulerLambda
-      Action: 'lambda:InvokeFunction'
-      Principal: 'events.amazonaws.com'
-      SourceArn: !GetAtt StartEC2Rule.Arn
-
-  StopLambdaInvokePermission:
-    Type: 'AWS::Lambda::Permission'
-    Properties:
-      FunctionName: !Ref EC2SchedulerLambda
-      Action: 'lambda:InvokeFunction'
-      Principal: 'events.amazonaws.com'
-      SourceArn: !GetAtt StopEC2Rule.Arn
