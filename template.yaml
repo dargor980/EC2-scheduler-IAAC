@@ -5,6 +5,9 @@ Resources:
     Properties:
       InstanceType: 't2.micro'
       ImageId: 'ami-053b0d53c279acc90'
+      SubnetId: 'subnet-0d2513aa392f287d0'
+      SecurityGroupIds: 
+        - 'sg-085a0ed7328b60f82'
       Tags:
         - Key: "Name"
           Value: "StartStopEC2"
@@ -46,6 +49,10 @@ Resources:
                   - 'logs:CreateLogStream'
                   - 'logs:PutLogEvents'
                 Resource: '*'
+              - Effect: 'Allow'
+                Action:
+                  - 's3:GetObject'
+                Resource: 'arn:aws:s3:::testgermanbucket/lambda-ec2-scheduler.zip'
 
   StartLambdaInvokePermission:
     Type: 'AWS::Lambda::Permission'
