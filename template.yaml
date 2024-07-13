@@ -14,7 +14,7 @@ Resources:
   EC2SchedulerLambda:
     Type: 'AWS::Lambda::Function'
     Properties:
-      Handler: 'index.handler',
+      Handler: 'index.handler'
       Role: !GetAtt LambdaExecutionRole.Arn
       Code:
         S3Bucket: 'testgermanbucket'
@@ -26,32 +26,32 @@ Resources:
   LambdaExecutionRole:
     Type: 'AWS::IAM::Role'
     Properties:
-    AssumeRolePolicyDocument:
-      Version: '2012-10-17'
-      Statement:
-        - Effect: 'Allow'
-          Principal:
-            Service: 'lambda.amazonaws.com'
-          Action: 'sts:AssumeRole'
-    Policies:
-      - PolicyName: 'StartStopLambdaPolicy'
-        PolicyDocument:
-          Version: '2012-10-17'
-          Statement:
-            - Effect: 'Allow'
-              Action:
-                - 'ec2:StartInstance'
-                - 'ec2:StopInstance'
-                - 'logs:createLogGroup'
-                - 'logs:CreateLogStream'
-                - 'logs:PutLogEvents'
-              Resource: '*'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: 'Allow'
+            Principal:
+              Service: 'lambda.amazonaws.com'
+            Action: 'sts:AssumeRole'
+      Policies:
+        - PolicyName: 'StartStopLambdaPolicy'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: 'Allow'
+                Action:
+                  - 'ec2:StartInstances'
+                  - 'ec2:StopInstances'
+                  - 'logs:CreateLogGroup'
+                  - 'logs:CreateLogStream'
+                  - 'logs:PutLogEvents'
+                Resource: '*'
 
   StartEC2Rule:
-    Type: 'AWS::Events:Rule'
+    Type: 'AWS::Events::Rule'
     Properties:
       Description: 'Rule to start EC2 instance at 8 AM daily'
-      ScheduleExpresion: 'cron(0 8 * * ? *)'
+      ScheduleExpression: 'cron(0 8 * * ? *)'
       Targets:
         - Arn: !GetAtt EC2SchedulerLambda.Arn
           Id: "StartEC2LambdaTarget"
@@ -68,7 +68,7 @@ Resources:
           Input: '{"action": "stop"}'
   
   StartLambdaInvokePermission:
-    Type: 'Aws::Lambda::Permission'
+    Type: 'AWS::Lambda::Permission'
     Properties:
       FunctionName: !Ref EC2SchedulerLambda
       Action: 'lambda:InvokeFunction'
@@ -82,4 +82,3 @@ Resources:
       Action: 'lambda:InvokeFunction'
       Principal: 'events.amazonaws.com'
       SourceArn: !GetAtt StopEC2Rule.Arn
-
