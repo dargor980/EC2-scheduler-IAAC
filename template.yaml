@@ -6,8 +6,10 @@ Resources:
       InstanceType: 't2.micro'
       ImageId: 'ami-0c55b159cbfafe1f0'
       Tags:
+        - Key: 'Name'
+          Value: 'StartStopEC2'
         - Key: 'AutoStartStop'
-        - value: 'True'
+          Value: 'True'
   
   EC2SchedulerLambda:
     Type: 'AWS::Lambda::Function'
