@@ -45,6 +45,7 @@ Resources:
                 Action:
                   - 'ec2:StartInstances'
                   - 'ec2:StopInstances'
+                  - 'ec2:describeInstances'
                   - 'logs:CreateLogGroup'
                   - 'logs:CreateLogStream'
                   - 'logs:PutLogEvents'
