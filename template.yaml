@@ -7,9 +7,9 @@ Resources:
       ImageId: 'ami-0c55b159cbfafe1f0'
       Tags:
         - Key: 'Name'
-          Value: 'StartStopEC2'
+            Value: 'StartStopEC2'
         - Key: 'AutoStartStop'
-          Value: 'True'
+            Value: 'True'
   
   EC2SchedulerLambda:
     Type: 'AWS::Lambda::Function'
