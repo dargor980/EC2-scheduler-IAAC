@@ -72,20 +72,24 @@ Resources:
       SourceArn: !Sub "arn:aws:events:${AWS::Region}:${AWS::AccountId}:rule/StopEC2Rule"
 
   StartEC2Rule:
-    Type: 'AWS::Events::Rule'
+    Type: 'AWS::Scheduler::Schedule'
     Properties:
       Description: 'Rule to start EC2 instance at 8 AM daily'
       ScheduleExpression: 'cron(0 8 * * ? *)'
+      FlexibleTimeWindow:
+        Mode: 'OFF'
       Targets:
         - Arn: !GetAtt EC2SchedulerLambda.Arn
           Id: "StartEC2LambdaTarget"
           Input: '{"action": "start"}'
 
   StopEC2Rule:
-    Type: 'AWS::Events::Rule'
+    Type: 'AWS::Scheduler::Schedule'
     Properties:
       Description: 'Rule to stop EC2 instance at 8 PM daily'
       ScheduleExpression: 'cron(0 20 * * ? *)'
+      FlexibleTimeWindow:
+        Mode: 'OFF'
       Targets:
         - Arn: !GetAtt EC2SchedulerLambda.Arn
           Id: "StopEC2LambdaTarget"
