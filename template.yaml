@@ -99,6 +99,7 @@ Resources:
         Mode: 'OFF'
       Target:
           Arn: !GetAtt EC2SchedulerLambda.Arn
+          RoleArn: !GetAtt SchedulerExecutionRole.Arn
           Input: '{"action": "start"}'
 
   StopEC2Rule:
@@ -110,4 +111,5 @@ Resources:
         Mode: 'OFF'
       Target:
           Arn: !GetAtt EC2SchedulerLambda.Arn
+          RoleArn: !GetAtt SchedulerExecutionRole.Arn
           Input: '{"action": "stop"}'
