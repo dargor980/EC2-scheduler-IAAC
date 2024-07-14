@@ -78,7 +78,7 @@ Resources:
       ScheduleExpression: 'cron(0 8 * * ? *)'
       FlexibleTimeWindow:
         Mode: 'OFF'
-      Targets:
+      Target:
         - Arn: !GetAtt EC2SchedulerLambda.Arn
           Id: "StartEC2LambdaTarget"
           Input: '{"action": "start"}'
@@ -90,7 +90,7 @@ Resources:
       ScheduleExpression: 'cron(0 20 * * ? *)'
       FlexibleTimeWindow:
         Mode: 'OFF'
-      Targets:
+      Target:
         - Arn: !GetAtt EC2SchedulerLambda.Arn
           Id: "StopEC2LambdaTarget"
           Input: '{"action": "stop"}'
