@@ -54,6 +54,25 @@ Resources:
                 Action:
                   - 's3:GetObject'
                 Resource: 'arn:aws:s3:::testgermanbucket/lambda-ec2-scheduler.zip'
+  SchedulerExecutionRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: 'Allow'
+            Principal:
+              Service: 'scheduler.amazonaws.com'
+            Action: 'sts:AssumeRole'
+      Policies:
+        - PolicyName: 'SchedulerPolicy'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: 'Allow'
+                Action:
+                  - 'lambda:InvokeFunction'
+                Resource: !GetAtt EC2SchedulerLambda.Arn
 
   StartLambdaInvokePermission:
     Type: 'AWS::Lambda::Permission'
@@ -80,7 +99,6 @@ Resources:
         Mode: 'OFF'
       Target:
           Arn: !GetAtt EC2SchedulerLambda.Arn
-          Id: "StartEC2LambdaTarget"
           Input: '{"action": "start"}'
 
   StopEC2Rule:
@@ -92,5 +110,4 @@ Resources:
         Mode: 'OFF'
       Target:
           Arn: !GetAtt EC2SchedulerLambda.Arn
-          Id: "StopEC2LambdaTarget"
           Input: '{"action": "stop"}'
