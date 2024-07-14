@@ -79,7 +79,7 @@ Resources:
       FlexibleTimeWindow:
         Mode: 'OFF'
       Target:
-        - Arn: !GetAtt EC2SchedulerLambda.Arn
+          Arn: !GetAtt EC2SchedulerLambda.Arn
           Id: "StartEC2LambdaTarget"
           Input: '{"action": "start"}'
 
@@ -91,6 +91,6 @@ Resources:
       FlexibleTimeWindow:
         Mode: 'OFF'
       Target:
-        - Arn: !GetAtt EC2SchedulerLambda.Arn
+          Arn: !GetAtt EC2SchedulerLambda.Arn
           Id: "StopEC2LambdaTarget"
           Input: '{"action": "stop"}'
